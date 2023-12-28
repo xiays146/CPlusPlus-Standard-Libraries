@@ -32,3 +32,29 @@
   ```cpp
   R"(xxx-string-here-xxx)"
   ```
++ noexcept
+  ```cpp
+  void foo (int a) noexcept(x > 0){
+    // do something
+    // throw no exception when param x > 0
+  }
+  ```
++ constexpr
+  enable expressions be evaluted at compile time
+  ```cpp
+  constexpr int square(int x){
+    return x * x;
+  }
+  float array[square(2)];  // --> use a const value to init a float array
+
+  std::array<float, std::numeric_limits<char>::max()> data;  // --> the max char from numeric is a const value
+  ```
++ variadic templates
+  ```cpp
+  void print() {}
+  template <typename T, typename ...Ts>
+  void print(const T& fisrt, const Ts&... others){
+    // std::cout << first << std::endl;
+    print(others...);
+  }
+  ```
