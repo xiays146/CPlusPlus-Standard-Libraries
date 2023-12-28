@@ -24,3 +24,11 @@
     // print i
   }
   ```
++ rvalue and lvalue
+  ```cpp
+  T && value
+  ```
++ raw string literals
+  ```cpp
+  R"(xxx-string-here-xxx)"
+  ```
