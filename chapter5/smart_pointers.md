@@ -43,3 +43,27 @@
   + is not thread safe in general
 
 + unique_ptr
+  + helps to avoid resource leaks when exception are thrown
+  ```cpp
+  void foo(){
+    // ugly code
+    classA *p = new classA;
+
+    try {
+      // do something
+    }
+    catch(...){
+      // process exceptions
+      delete p;
+    }
+
+    delete p;
+  }
+
+  void foo2(){
+    // more pretty
+    std::unique_ptr<classA> pA(new classA);
+
+    // now you don't have to delete anything about classA
+  }
+  ```
