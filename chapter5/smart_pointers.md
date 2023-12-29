@@ -55,6 +55,7 @@
     catch(...){
       // process exceptions
       delete p;
+      // thrwo exception
     }
 
     delete p;
@@ -66,4 +67,12 @@
 
     // now you don't have to delete anything about classA
   }
+  ```
+  + use *std::move()* to transfer ownership of the unique_ptr
+  ```cpp
+  std::unique_ptr<int> p = new int; // error
+  std::unique_ptr<int> p(new int); // ok
+
+  std::unique_ptr<int> p2(p); // error
+  std::unique_ptr<int> p3(std::move(p)); // ok
   ```
