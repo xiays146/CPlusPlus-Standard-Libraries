@@ -52,6 +52,7 @@
 + variadic templates
   ```cpp
   void print() {}
+  
   template <typename T, typename ...Ts>
   void print(const T& fisrt, const Ts&... others){
     // std::cout << first << std::endl;
