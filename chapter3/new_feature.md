@@ -59,3 +59,10 @@
     print(others...);
   }
   ```
++ lambdas
+  ```cpp
+  auto func = [=, &x, y](const auto& e){ 
+    return e * 3 + x - y;
+    ++x;
+    }
+  ```
