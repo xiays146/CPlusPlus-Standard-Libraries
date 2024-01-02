@@ -76,3 +76,14 @@
   std::unique_ptr<int> p2(p); // error
   std::unique_ptr<int> p3(std::move(p)); // ok
   ```
+  + use unique_ptr to process arrays: an important difference from shared_ptr
+  ```cpp
+  std::unique_ptr<std::string> array_p(new std::string[10]); // runtime error
+  std::unique_ptr<std::string[]> array_p2(new std::string[10]); // ok
+  std::cout << *array_p2 << std::endl; // error: * undefined for arrays
+  std::cout << array_p2[1] << std::endl; // ok
+
+  ```
+  + avoid using auto_ptr
+  + require less resource than shared_ptr 
+  + never create multiple smart pointers out of the same oridinary pointer for any smart pointer class
