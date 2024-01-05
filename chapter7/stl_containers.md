@@ -165,3 +165,42 @@
     elem.second += 10;
     });
   ```
+  + simply modify the key of an element
+  ```cpp
+  map["new_key"] = map["old_key"]
+  map.erase("old_key")
+  ```
++ unordered containers
+  + use the default hash function *std::hash<>* from *<functional>*
+  + difference between rehash and reserve
+  ```cpp
+  col.rehash(100); // prepare for 100 / max_load_factor() element
+  col.reserve(100); // prepare for 100 element
+  ```
++ implementing reference semantics
+  + use shared pointers: *shared_ptr<>*
+  ```cpp
+  class MyClass{
+    public:
+      // ...
+    private:
+      // ...
+  };
+
+  using MyClassPtr = std::shared_ptr<MyClass>;
+  std::set<MyClassPtr> my_classes {
+    MyClassPtr(new MyClass{...}),
+    MyClassPtr(new MyClass{...}),
+    ...
+  };
+  ```
+  + use a reference warpper
+  ```cpp
+  std::vector<std::reference_warpper<MyClass>> my_second_classes;
+  MyClass test;
+  my_second_classes.push_back(test); // insert test into my_second_classes by reference
+  // now you can modify content from test, and the corresponding content in vector is modified
+  ```
++ how to choose which container
+  + overview of container abilities
+  ![abilities](./abilities.png)
