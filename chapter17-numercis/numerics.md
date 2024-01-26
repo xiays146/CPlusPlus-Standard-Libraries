@@ -45,3 +45,21 @@
     + poisson_distribution
    
       ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/c7657adf-13e6-42db-af8e-f9dae158e831)
+
+    + normal_distribution
+   
+      ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/6f96aa18-9670-48af-bd05-bb546fafecad)
+
+  + complex numbers
+    + complex<>
+  + global numeric functions
+    + <cmath> and <cstdlib>
+
+    ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/427770fd-43da-4cfd-a10a-a3c47fd281fe)
+
+    ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/520c3d68-7b18-4e70-914e-202952932cfa)
+
+    
+
+
+    
