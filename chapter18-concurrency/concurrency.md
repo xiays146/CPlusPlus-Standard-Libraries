@@ -10,23 +10,23 @@
   + example
  
     the example is faster than single thread version, when is same fast as the single thread version when the platform is not support parallel.
-  ```cpp
-  int func1(){
-    ...
-    return 1;
-  }
-
-  int func2(){
-    ...
-    return 2;
-  }
-
-  int main(){
-    std::future<int> result1(std::async(func1));
-    int result2 = func2();
-    int result = result1.get() + result2;
-  }
-  ```
+    ```cpp
+    int func1(){
+      ...
+      return 1;
+    }
+  
+    int func2(){
+      ...
+      return 2;
+    }
+  
+    int main(){
+      std::future<int> result1(std::async(func1));
+      int result2 = func2();
+      int result = result1.get() + result2;
+    }
+    ```
 + if the operator return anything, using:
   ```cpp
   std::future<void> result(std::async(...));
