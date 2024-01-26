@@ -35,4 +35,8 @@
   ```cpp
   std::async([]{...});
   ```
++ force func to launch now
+  ```cpp
+  std::async(std::launch::async, foo); // if cannot launch when call, it throws a std::system_eror exception
+  ```
     
