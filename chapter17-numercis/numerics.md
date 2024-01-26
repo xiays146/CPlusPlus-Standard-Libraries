@@ -53,7 +53,7 @@
   + complex numbers
     + complex<>
   + global numeric functions
-    + <cmath> and <cstdlib>
+    + cmath and cstdlib
 
     ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/427770fd-43da-4cfd-a10a-a3c47fd281fe)
 
