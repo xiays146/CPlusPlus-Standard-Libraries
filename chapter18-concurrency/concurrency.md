@@ -75,7 +75,7 @@
     ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/c7999e43-0a5f-48e9-b8e9-feb226ecff44)
   + operations of class thread
     ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/8a6c8e9d-099d-4fee-8b58-3c8fb0d37928)
-  + operation of this_thread
+  + operation of this_thread  
     ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/0716d784-5cc7-4025-b1ed-0b9be7b13eef)
 + problems
   + rules
@@ -118,6 +118,87 @@
       std::lock_guard<std::mutex> lg(lock);
       --val;
       ...
+    }
+    ```
+  + maybe you need recursive_mutex sometime
+  + multiple locks --> std::lock()
+  + lock_guard and unique_guard example
+    ```cpp
+    ...
+    bool readyFlag;
+    std::mutex readyFlagMutex;
+
+    void func1(){
+      // do something thread2 needs as preparation
+      ...
+      {
+        std::lock_guard<std::mutex> lg(readyFlagMutex);
+        readyFlag = true;
+      }
+    }
+
+    void func2(){
+      // wait unitl readyFlag is true
+      {
+        std::unique_lock<std::mutex> ul(readyFlag);
+        while (!readFlag){
+          ul.unlock();
+          std::this_thread::yield(); // hint to reschedule to the next thread
+          std::this_thread::sleep_For(std::chrono::milliseconds(100)); // sleep for thread1 to access readyFlag
+          ul.lock();
+        }
+      } // release lock
+
+      // do whatever shall happen after thread1 has prepared things
+      ...
+    }
+    
+    ...
+    ```
+  + lazy initialization
+    ```cpp
+    class MyClass{
+      private:
+        mutable std::once_flag initDataFlag;
+        void initData() const; // prepare data
+      public:
+        data getData() { // access data 
+          std::call_once(initDataFlag, &MyClass::initData, this); // when access data, init it
+          ...
+      }
+    };
+    ```
++ condition variables
+  + example 1
+    ```cpp
+    // include header
+    bool readyFlag;
+    std::mutex readMutex;
+    std::condition_variable readCOndVar；
+
+    void f1(){
+      // do something thread2 needs as preparation
+      ...
+      {
+        std::lock_guard<std::mutex> lg(readyFlagMutex);
+        readyFlag = true;
+      }
+    readyCondVar.notify_one();
+    }
+
+    void f2(){
+      // wait unitl readyFlag is true
+      {
+        std::unique_lock<std::mutex> ul(readyMUtex);
+        readyCondVar.wait(ul, []{ return readyFlag; });
+      } // release lock
+      // do whatever shall happen after thread1 has prepared things
+      ...
+    }
+
+    int main() {
+      auto f1 = std::async(std::launch::async, f1);
+      auto f2 = std::async(std::launch::async, f2);
     }
     ```
     
