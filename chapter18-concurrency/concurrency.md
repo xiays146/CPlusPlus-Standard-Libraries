@@ -275,9 +275,9 @@
       auto f2 = std::async(std::launch::async, f2);
     }
     ```
-  + operation
+  + operation  
     ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/43f8a231-f191-4072-87aa-559aa43e04e3)
-  + C-style interface of atomics
+  + C-style interface of atomics  
     ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/a58ea575-dd72-486f-a0d8-3b112b1ed01e)
 
     
