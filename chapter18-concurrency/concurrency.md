@@ -183,13 +183,13 @@
         std::lock_guard<std::mutex> lg(readyFlagMutex);
         readyFlag = true;
       }
-    readyCondVar.notify_one();
+      readyCondVar.notify_one();
     }
 
     void f2(){
       // wait unitl readyFlag is true
       {
-        std::unique_lock<std::mutex> ul(readyMUtex);
+        std::unique_lock<std::mutex> ul(readyMUtex); // pay attention to here
         readyCondVar.wait(ul, []{ return readyFlag; });
       } // release lock
       // do whatever shall happen after thread1 has prepared things
@@ -201,4 +201,83 @@
       auto f2 = std::async(std::launch::async, f2);
     }
     ```
+  + example 2
+    ```cpp
+    // include headers
+    std::queue<int> queue;
+    std::mutex queueMutex;
+    std::condition_variable queueCondVar;
+
+    void provider(int val){
+      // push different values
+      for (int i = 0; i < 6; i++){
+        {
+          std::lock_guard<std::mutex> lg(queueMutex);
+          queue.push(val + i);
+        } // release lock
+        queueCondVar.notify_one(); // if change to notify_all(), publish to all registered comsumers in event-driven system
+        std::this_thread::sleep_For(std::chrono::milliseconds(val));
+      }
+    }
+
+    void comsumer(int num){
+      // pop values if available
+      while (true){
+        int val;
+        {
+          std::unique_lock<std::mutex> ul(queueMutex);
+          queueCondVar.wait(ul, []{ return !queue.empty(); });
+          val = queue.front();
+          queue.pop();
+        } // release lock
+        std::cout << "consumer " << num << ": " << val << std::endl;
+      }
+    }
+
+    int main(){
+      // start three provider for values
+      atuo p1 = std::async(std::launch::async, provider, 100);
+      atuo p2 = std::async(std::launch::async, provider, 300);
+      atuo p3 = std::async(std::launch::async, provider, 500);
+
+      // start two comsumers print values
+      atuo c1 = std::async(std::launch::async, consumer, 1);
+      atuo c2 = std::async(std::launch::async, consumer, 2);
+    }
+    ```
++ atomics
+  + example
+    ```cpp
+    ...
+    int val;
+    std::atomic<bool> readyFlag(false);
+
+    void f1(){
+      // do something to prepare
+      val = 10;
+      ...
+      readyFalg.store(true);
+    }
+
+    void f2(){
+      // wait until f1 done
+      while (!readyFlag.load()){
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      }
+
+      // do whateever to comsume data
+      std::cout << "get val is " << val << std::endl;
+      ...
+    }
+
+    int main(){
+      auto f1 = std::async(std::launch::async, f1);
+      auto f2 = std::async(std::launch::async, f2);
+    }
+    ```
+  + operation
+    ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/43f8a231-f191-4072-87aa-559aa43e04e3)
+  + C-style interface of atomics
+    ![image](https://github.com/xiays146/c-standard-libraries-NMJ/assets/48829659/a58ea575-dd72-486f-a0d8-3b112b1ed01e)
+
     
